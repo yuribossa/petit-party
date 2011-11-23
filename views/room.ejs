@@ -1,0 +1,26 @@
+<h1>Party Room</h1>
+<div id="ytplayer">
+You need Flash player 8+ and JavaScript enabled to view this video.
+</div>
+<table>
+    <form onSubmit="return false;">
+        <tr>
+            <td>Next Track</td>
+            <td><input type="text" id="nextVideoId" /></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input type="submit" value="Cue" onClick="cue();" /></td>
+        </tr>
+    </form>
+    <form onSubmit="return false;">
+        <tr>
+            <td>Comment</td>
+            <td><textarea id="comment"></textarea></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input type="submit" value="Post" onClick="postComment();" /></td>
+        </tr>
+    </form>
+</table>

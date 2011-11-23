@@ -1,0 +1,66 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    line-height: 1.2;
+    color: #202020;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    /*font-size: 0.9em;*/
+    line-height: 1.5em;
+    background: #ffffff;
+    width: 100%;
+}
+
+a {
+    text-decoration: none;
+}
+
+a img {
+    border: none;
+}
+
+a:link {
+    color: #202020;
+}
+
+a:visited {
+    color: #00bfff;
+}
+
+a:hover {
+    color: #00bfff;
+}
+
+a:active {
+    color: #00bfff;
+}
+
+p {
+    margin: 5px 0;
+}
+
+header {
+    padding: 10px;
+    height: 30px;
+    background-color: lime;
+}
+
+header a:visited {
+    color: #202020;
+}
+
+footer {
+    padding: 10px;
+    height: 30px;
+    background-color: lime;
+}
+
+footer a:visited {
+    color: #202020;
+}
+
+#content {
+    padding: 10px;
+}

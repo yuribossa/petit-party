@@ -1,11 +1,22 @@
-<h1>Party Room</h1>
+<h1 class="roomName">
+<%= roomName %>
+</h1>
+<div id="leftContent">
 <div id="ytplayer">
 You need Flash player 8+ and JavaScript enabled to view this video.
 </div>
+<h3 class="message">
+</h3>
+<h3 class="error">
+</h3>
 <table>
     <form onSubmit="return false;">
         <tr>
             <td>Next Track</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>youtube.com/watch?v=</td>
             <td><input type="text" id="nextVideoId" /></td>
         </tr>
         <tr>
@@ -24,3 +35,9 @@ You need Flash player 8+ and JavaScript enabled to view this video.
         </tr>
     </form>
 </table>
+</div>
+<div id="rightContent">
+<iframe width="400">
+</iframe>
+</div>
+

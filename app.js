@@ -50,15 +50,6 @@ app.post('/join', function(req, res) {
     res.redirect('/room/' + req.body.room.id);
 });
 
-function parseISO8601(isodatetime) {
-    　　　var newdate = isodatetime.replace(/^(\d{4})-(\d{2})-(\d{2})T([0-9:]*)([.0-9]*)(.)(.*)$/,'$1/$2/$3 $4 GMT');
-    　　　newdate = Date.parse(newdate) + 1000*RegExp.$5;
-    　　　var k = +1;
-    　　　newdate -= k * Date.parse('1970/01/01 '+RegExp.$7+' GMT') * (RegExp.$6+'1');
-    　　　return new Date(newdate);
-
-}
-
 app.post('/open', function(req, res) {
     console.log(req.body.room);
     var r = new Room();
@@ -82,54 +73,63 @@ app.get('/room/:id', function(req, res) {
             return;
         }
 
-        var room = io
-            .of('/room/' + req.params.id)
-            .on('connection', function(socket) {
-                console.log('Room ' + req.params.id + ' opened');
+        if (!doc.count++) {
+            var room = io
+                .of('/room/' + req.params.id)
+                .on('connection', function(socket) {
+                    console.log('Room ' + req.params.id + ' opened');
 
-                socket.on('cue', function(data) {
-                    console.log(data);
-                    var options = {
-                        host: 'www.youtube.com'
-                        , port: 80
-                        , path: '/watch?v=' + data.id
-                    };
-                    http.get(options, function(res) {
-                        if (res.statusCode == 200) {
-                            doc.videos.push({id: data.id});
-                            doc.save(function(err) {
-                                if (err) {
-                                } else {
-                                    socket.broadcast.emit('cue', {nextVideoId: data.id});
-                                }
-                            });
-                        }
+                    socket.on('cue', function(data) {
+                        console.log(data);
+                        var options = {
+                            host: 'www.youtube.com'
+                            , port: 80
+                            , path: '/watch?v=' + data.id
+                        };
+                        http.get(options, function(res) {
+                            if (res.statusCode == 200) {
+
+                                doc.videos.push({id: data.id});
+                                doc.save(function(err) {
+                                    if (err) {
+                                    } else {
+                                        socket.broadcast.emit('cue', {nextVideoId: data.id});
+                                    }
+                                });
+                            }
+                        });
+                    });
+
+                    socket.on('comment', function(data) {
+                        console.log(doc);
+                        console.log(data);
+                        doc.comments.push({comment: data.comment});
+                        doc.save(function(err) {
+                            if (err) {
+                                console.log(err);
+                            } else {
+                                console.log('bloadcast');
+                                socket.broadcast.emit('comment', {comment: data});
+                            }
+                        });
+                    });
+
+                    socket.on('disconnect', function() {
+                        console.log('Room ' + req.params.id + ' closed');
                     });
                 });
+        }
 
-                socket.on('comment', function(data) {
-                    console.log(doc);
-                    console.log(data);
-                    doc.comments.push({comment: data.comment});
-                    doc.save(function(err) {
-                        if (err) {
-                            console.log(err);
-                        } else {
-                            console.log('bloadcast');
-                            socket.broadcast.emit('comment', {comment: data});
-                        }
-                    });
-                });
-
-                socket.on('disconnect', function() {
-                    console.log('Room ' + req.params.id + ' closed');
-                });
+        doc.save(function(err) {
+            if (err) {
+                res.send(500);
+                return;
+            }
+            res.render('room', {
+                title: 'Petit Party'
+                , roomId: req.params.id
+                , youtube: true
             });
-
-        res.render('room', {
-            title: 'Petit Party'
-            , roomId: req.params.id
-            , youtube: true
         });
     });
 });

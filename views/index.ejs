@@ -1,4 +1,9 @@
 <h1>Petit Party</h1>
+<h3 class="error">
+<% if (message) { %>
+    <%= message %>
+<% } %>
+</h3>
 <table>
     <form method="post" action="/join">
         <tr>

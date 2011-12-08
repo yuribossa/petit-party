@@ -4,12 +4,13 @@
 }
 
 body {
+    position: relative;
     line-height: 1.2;
     color: #202020;
-    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    font: 14px Helvetica, Arial, sans-serif;
     /*font-size: 0.9em;*/
     line-height: 1.5em;
-    background: #ffffff;
+    background: #f8f8ff;
     width: 100%;
 }
 
@@ -41,26 +42,52 @@ p {
     margin: 5px 0;
 }
 
+.message {
+}
+
+.error {
+    color: #ff0000;
+}
+
 header {
     padding: 10px;
     height: 30px;
-    background-color: lime;
+    background-color: #696969;
+    color: #f5f5f5;
 }
 
 header a:visited {
-    color: #202020;
+    color: #f5f5f5;
 }
 
 footer {
     padding: 10px;
     height: 30px;
-    background-color: lime;
+    background-color: #696969;
+    color: #f5f5f5;
+    clear: both;
 }
 
 footer a:visited {
-    color: #202020;
+    color: #f5f5f5;
 }
 
 #content {
     padding: 10px;
+}
+
+.roomName {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+#leftContent {
+    float: left;
+    width: 440px;
+}
+
+#rightContent {
+    margin-left: 450px;
+    width: 400px;
+    background-color: lime;
 }

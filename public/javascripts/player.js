@@ -89,5 +89,10 @@ function postComment() {
 
 // Create comment DOM
 function addComment(comment) {
+    $(".comment:hidden").clone().prependTo("#timeline").show();
+    $("#timeline > .comment:first > p").text(comment);
+    var text = $("#timeline > .comment:first > p").html();
+    text = text.replace(/(\r\n)|\r|\n/g, "<br/>");
+    $("#timeline > .comment:first > p").text("").html(text);
 }
 

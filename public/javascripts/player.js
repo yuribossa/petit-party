@@ -1,6 +1,12 @@
 /**
  * player.js
+ * YouTube and WebSocket
  */
+
+/**
+ * WebSocket
+ */
+var socket = io.connect(document.location.href);
 
 /**
  * YouTube
@@ -10,32 +16,27 @@ var params = {allowScriptAccess: 'always'};
 swfobject.embedSWF('http://www.youtube.com/v/qwD4l8Oyckg?enablejsapi=1&playerapiid=ytplayer', 'ytplayer', '440', '270', '8', null, null, params, null);
 
 function onYouTubePlayerReady(playerId) {
-        ytplayer = document.getElementById('ytplayer');
-        ytplayer.addEventListener('onStateChange', 'onytplayerStateChange');
-        ytplayer.playVideo();
+    ytplayer = document.getElementById('ytplayer');
+    ytplayer.addEventListener('onStateChange', 'onytplayerStateChange');
+    // First send message
+    socket.emit('join', {});
 }
 
-// Queue
-var videoQueue = [];
+var currentVideoId = '';
 
 // YouTube player state change function
-var flg = 0;
 function onytplayerStateChange(newState) {
     switch (newState) {
         // Video finish
         case 0:
-            if (videoQueue.length) {
-                var id = videoQueue.shift();
-                ytplayer.loadVideoById(id, 0);
-            }
+            socket.emit('signal', {
+                stat: 'end'
+                , videoId: currentVideoId
+            });
+            currentVideoId = '';
             break;
     }
 }
-
-/**
- * WebSocket
- */
-var socket = io.connect(document.location.href);
 
 // Message show time
 var showTime = 3000;
@@ -54,22 +55,24 @@ socket.on('comment', function(data) {
 
 // Receive cue
 socket.on('cue', function(data) {
-    if (!data.id) {
+    if (!data.res) {
         $('.error').text('Cue is not accepted.');
         setTimeout(function() {
             $('.error').text('');
         }, showTime);
     } else {
-        var state = ytplayer.getPlayerState();
-        if (state == -1 || state == 0) {
-            ytplayer.loadVideoById(data.id, 0);
-        } else {
-            $('.message').text('Next video is ready.');
-            setTimeout(function() {
-                $('.message').text('');
-            }, showTime);
-            videoQueue.push(data.id);
-        }
+        $('.message').text('Next video is ready.');
+    }
+});
+
+// Receive signal
+socket.on('signal', function(data) {
+    switch (data.stat) {
+        case 'play':
+            ytplayer.loadVideoById(data.videoId, data.start);
+            currentVideoId = data.videoId;
+            $('.message').text('');
+            break;
     }
 });
 

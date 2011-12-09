@@ -1,4 +1,8 @@
 
+/**
+ * Room model test
+ */
+
 var assert = require('assert')
   , mongoose = require('mongoose')
   , model = require('../lib/model')

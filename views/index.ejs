@@ -1,11 +1,16 @@
-<div class="indexContent">
-<h3 class="error">
+<div class="oneColContent">
+<h3 class="error" id="error">
 <% if (message) { %>
     <%= message %>
+    <script>
+    setTimeout(function() {
+        document.location.href = "<%= prefix %>";
+    }, 3000);
+    </script>
 <% } %>
 </h3>
 <table>
-    <form method="post" action="/join">
+    <form method="post" action="<%= prefix %>/join">
         <tr>
             <td><h3>Join Room</h3></td>
             <td></td>
@@ -19,7 +24,7 @@
             <td><input type="submit" value="Join" /></td>
         </tr>
     </form>
-    <form method="post" action="/open">
+    <form method="post" action="<%= prefix %>/open">
         <tr>
             <td><h3>Open New Room</h3></td>
             <td></td>

@@ -5,6 +5,5 @@
   , "dependencies": {
       "express": "2.4.6"
     , "ejs": ">= 0.0.1"
-    , "mongoose": ">= 1.0.27"
   }
 }
